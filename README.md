@@ -1,3 +1,4 @@
+
 ## Orphaned AutoPilot Devices
 
 - Displays devices that are orphaned or hidden in the AutoPilot web interface
@@ -5,5 +6,8 @@
 
 ## Usage
 
+```
 Install-Module -Name OrphanedAutoPilot
 Get-MissingAutoPilotDevices
+```
+

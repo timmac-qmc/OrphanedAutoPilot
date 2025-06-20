@@ -7,24 +7,6 @@
 #
 
 @{
-	
-# Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
-PrivateData = @{
-	PSData = @{
-		# Tags applied to this module. These help with module discovery in online galleries.
-		Tags = @('AutoPilot', 'Orphaned', 'Hidden')
-
-		# A URL to the main website for this project.
-		ProjectUri = 'https://github.com/timmac-qmc/OrphanedAutoPilot'
-
-		# ReleaseNotes of this module - our ReleaseNotes are in
-		# the file ReleaseNotes.md
-		# ReleaseNotes = ''
-
-	} # End of PSData hashtable
-
-} # End of PrivateData hashtable
-
 
 # Script module or binary module file associated with this manifest.
 RootModule = 'OrphanedAutoPilot.psm1'
