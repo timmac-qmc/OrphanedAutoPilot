@@ -10,10 +10,19 @@ Add-Type -AssemblyName System.Drawing
 
 function Get-AutoPilotDevices
 {
-    return Get-MgDeviceManagementWindowsAutopilotDeviceIdentity | Where-Object { $_.ManagedDeviceId -eq "00000000-0000-0000-0000-000000000000"  } 
+    param(
+        [Parameter(ParameterSetName="ShowAll")] [bool] $ShowAll = $false
+    )
+    if($ShowAll -eq $true)
+    {    
+        return Get-MgDeviceManagementWindowsAutopilotDeviceIdentity
+    }
+    else {
+        return Get-MgDeviceManagementWindowsAutopilotDeviceIdentity | Where-Object { $_.ManagedDeviceId -eq "00000000-0000-0000-0000-000000000000"  } 
+    }
 }
 
-function Delete-AutoPilotDevice
+function Remove-AutoPilotDevice
 {
     [CmdletBinding()]
     param(
@@ -132,26 +141,26 @@ function Show-Devices {
     # Create the filter TextBox
     $textBox = New-Object System.Windows.Forms.TextBox
     $textBox.Location = New-Object System.Drawing.Point(10, 10)
-    $textBox.Size = New-Object System.Drawing.Size(400, 20)
+    $textBox.Size = New-Object System.Drawing.Size(300, 20)
     $form.Controls.Add($textBox)
 
     # Create the filter Button
     $filterButton = New-Object System.Windows.Forms.Button
-    $filterButton.Location = New-Object System.Drawing.Point(410, 10)
+    $filterButton.Location = New-Object System.Drawing.Point(310, 10)
     $filterButton.Size = New-Object System.Drawing.Size(75, 20)
     $filterButton.Text = "Filter"
     $form.Controls.Add($filterButton)
 
     # Create the refresh Button
     $refreshButton = New-Object System.Windows.Forms.Button
-    $refreshButton.Location = New-Object System.Drawing.Point(490, 10)
+    $refreshButton.Location = New-Object System.Drawing.Point(390, 10)
     $refreshButton.Size = New-Object System.Drawing.Size(75, 20)
     $refreshButton.Text = "Refresh"
     $form.Controls.Add($refreshButton)
 
     # Create the azure Button
     $azureButton = New-Object System.Windows.Forms.Button
-    $azureButton.Location = New-Object System.Drawing.Point(570, 10)
+    $azureButton.Location = New-Object System.Drawing.Point(470, 10)
     $azureButton.Size = New-Object System.Drawing.Size(100, 20)
     $azureButton.Text = "Show in Azure"
     $azureButton.Enabled = $false
@@ -159,11 +168,18 @@ function Show-Devices {
 
     # Create the delete Button
     $deleteButton = New-Object System.Windows.Forms.Button
-    $deleteButton.Location = New-Object System.Drawing.Point(675, 10)
+    $deleteButton.Location = New-Object System.Drawing.Point(575, 10)
     $deleteButton.Size = New-Object System.Drawing.Size(100, 20)
     $deleteButton.Text = "Delete Device"
     $deleteButton.Enabled = $false
     $form.Controls.Add($deleteButton)
+
+    # Create checkbox
+    $showAllCb = New-Object System.Windows.Forms.Checkbox
+    $showAllCb.Location = New-Object System.Drawing.Point(685, 10)
+    $showAllCb.Size = New-Object System.Drawing.Size(100, 20)
+    $showAllCb.Text = "Show All"
+    $form.Controls.Add($showAllCb)
 
     # Create the DataGridView
     $dataGridView = New-Object System.Windows.Forms.DataGridView
@@ -211,7 +227,7 @@ function Show-Devices {
     })
 
     $refreshButton.Add_Click({
-        $dataGridView.DataSource = Get-AutoPilotDevices | Select-Object | ConvertTo-Datatable
+        $dataGridView.DataSource = Get-AutoPilotDevices -ShowAll $showAllCb.Checked | Select-Object | ConvertTo-Datatable
         $dataGridView.Refresh()
     })
 
@@ -237,10 +253,10 @@ function Show-Devices {
 
             if($confirmDialog -eq 'Yes')
             {
-                if((Delete-AutoPilotDevice -AutoPilotId $device.Id) -eq $true)
+                if((Remove-AutoPilotDevice -AutoPilotId $device.Id) -eq $true)
                 {
                     [System.Windows.MessageBox]::Show("Delete request submitted, it may take up to 30 minutes to process...","Device Deleted","Ok","Information")
-                    $dataGridView.DataSource = Get-AutoPilotDevices | Select-Object | ConvertTo-Datatable
+                    $dataGridView.DataSource = Get-AutoPilotDevices -ShowAll $showAllCb.Checked | Select-Object | ConvertTo-Datatable
                     $dataGridView.Refresh()
                 }
                 else {
@@ -253,6 +269,12 @@ function Show-Devices {
         finally {
             $deleteButton.Enabled = $true
         }
+    })
+
+
+    $showAllCb.Add_CheckStateChanged({ 
+        $dataGridView.DataSource = Get-AutoPilotDevices -ShowAll $showAllCb.Checked | Select-Object | ConvertTo-Datatable
+        $dataGridView.Refresh()
     })
 
     $dataGridView.add_selectionChanged({
