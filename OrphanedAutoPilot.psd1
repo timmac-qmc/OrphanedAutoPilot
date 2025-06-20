@@ -100,7 +100,7 @@ PrivateData = @{
          LicenseUri = 'https://github.com/timmac-qmc/OrphanedAutoPilot/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = 'https://github.com/timmac-qmc/OrphanedAutoPilot'
+         ProjectUri = 'https://github.com/timmac-qmc/OrphanedAutoPilot'
 
         # A URL to an icon representing this module.
         # IconUri = ''
