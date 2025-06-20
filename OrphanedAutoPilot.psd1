@@ -7,7 +7,6 @@
 #
 
 @{
-
 # Script module or binary module file associated with this manifest.
 RootModule = 'OrphanedAutoPilot.psm1'
 
@@ -30,7 +29,7 @@ CompanyName = 'QMC'
 Copyright = '(c) timmac-qmc. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = 'Find and delete Orphaned or missing AutoPilot devices that aren\'t shown in the web interface'
+ Description = 'Find and delete Orphaned or missing AutoPilot devices'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -95,13 +94,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+         Tags = @('AutoPilot', 'Orphaned', 'Hidden')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+         LicenseUri = 'https://github.com/timmac-qmc/OrphanedAutoPilot/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        # ProjectUri = 'https://github.com/timmac-qmc/OrphanedAutoPilot'
 
         # A URL to an icon representing this module.
         # IconUri = ''
